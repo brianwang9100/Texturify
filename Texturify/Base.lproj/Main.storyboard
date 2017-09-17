@@ -66,14 +66,24 @@
                                     <action selector="textureButtonPressed:" destination="CGC-jL-GOC" eventType="touchUpInside" id="y7V-Jd-pZB"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1QC-4K-LlY">
+                                <rect key="frame" x="311" y="523" width="34" height="48"/>
+                                <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="30"/>
+                                <state key="normal" title="🗑"/>
+                                <connections>
+                                    <action selector="trashButtonPressed:" destination="CGC-jL-GOC" eventType="touchUpInside" id="025-ET-KU8"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="p9F-Pf-hie" firstAttribute="bottom" secondItem="jOm-NM-g8P" secondAttribute="bottom" id="0PK-CZ-Q02"/>
                             <constraint firstItem="jOm-NM-g8P" firstAttribute="top" secondItem="p9F-Pf-hie" secondAttribute="top" id="5PX-Ij-QGP"/>
                             <constraint firstItem="peE-n9-vGc" firstAttribute="firstBaseline" secondItem="TNW-Fz-zgs" secondAttribute="baseline" constant="104" symbolType="layoutAnchor" id="9RC-YV-rJZ"/>
+                            <constraint firstItem="bPN-yt-0Hu" firstAttribute="top" secondItem="1QC-4K-LlY" secondAttribute="bottom" constant="10" id="9bR-X2-gmK"/>
                             <constraint firstItem="tlS-4i-4UZ" firstAttribute="centerX" secondItem="aE4-3t-pTK" secondAttribute="centerX" id="BgW-Sr-DI7"/>
                             <constraint firstItem="TNW-Fz-zgs" firstAttribute="centerX" secondItem="peE-n9-vGc" secondAttribute="centerX" id="IBe-8F-pZj"/>
+                            <constraint firstItem="p9F-Pf-hie" firstAttribute="trailing" secondItem="1QC-4K-LlY" secondAttribute="trailing" constant="30" id="IEi-a7-QsS"/>
                             <constraint firstItem="peE-n9-vGc" firstAttribute="centerY" secondItem="aE4-3t-pTK" secondAttribute="centerY" constant="20" id="Q9E-67-bhS"/>
                             <constraint firstItem="p9F-Pf-hie" firstAttribute="trailing" secondItem="bPN-yt-0Hu" secondAttribute="trailing" constant="30" id="Ss9-6X-bfW"/>
                             <constraint firstItem="p9F-Pf-hie" firstAttribute="trailing" secondItem="jOm-NM-g8P" secondAttribute="trailing" id="aO8-RT-XMj"/>
@@ -91,6 +101,7 @@
                         <outlet property="distanceLabel" destination="TNW-Fz-zgs" id="Y1a-ez-9Wv"/>
                         <outlet property="sceneView" destination="jOm-NM-g8P" id="f8f-gV-xuO"/>
                         <outlet property="textureButton" destination="tlS-4i-4UZ" id="7QJ-ux-Muq"/>
+                        <outlet property="trashButton" destination="1QC-4K-LlY" id="gTh-lm-x1q"/>
                         <outlet property="undoButton" destination="bPN-yt-0Hu" id="1CY-cW-ufO"/>
                         <segue destination="m5a-7T-mnF" kind="show" identifier="textureSegue" id="yNe-ei-32c"/>
                     </connections>

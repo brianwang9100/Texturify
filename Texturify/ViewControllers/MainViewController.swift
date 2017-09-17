@@ -10,6 +10,9 @@ import UIKit
 import ARKit
 import SceneKit
 
+let radius:CGFloat = 0.02
+let highlightRadius:Float = 0.06
+
 class MainViewController: UIViewController, ARSCNViewDelegate {
 
     @IBOutlet weak var sceneView: ARSCNView!
@@ -18,17 +21,21 @@ class MainViewController: UIViewController, ARSCNViewDelegate {
     @IBOutlet weak var undoButton: UIButton!
     @IBOutlet weak var textureButton: UIButton!
     
+    @IBOutlet weak var trashButton: UIButton!
+    
     let session = ARSession()
     let sessionConfig = ARWorldTrackingConfiguration()
     
     var dataPoints:[SCNVector3] = []
     var pointNodes:[SCNNode] = []
-    var lineNodes:[SCNNode] = []
+//    var lineNodes:[SCNNode] = []
     
     var currentPlane:SCNNode!
     
     var textures = ["carvedlimestoneground", "granitesmooth", "oakfloor2", "old-textured-fabric", "rustediron-streaks", "sculptedfloorboards", "tron"]
     var currentTextureIndex = 0
+    
+    var highlightedNode:SCNNode?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,13 +49,13 @@ class MainViewController: UIViewController, ARSCNViewDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         UIApplication.shared.isIdleTimerDisabled = true
-        session.run(sessionConfig)
+//        session.run(sessionConfig)
         uiSetup()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        session.pause()
+//        session.pause()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -89,12 +96,12 @@ class MainViewController: UIViewController, ARSCNViewDelegate {
         for point in pointNodes {
             point.removeFromParentNode()
         }
-        for line in lineNodes {
-            line.removeFromParentNode()
-        }
+//        for line in lineNodes {
+//            line.removeFromParentNode()
+//        }
         dataPoints = []
         pointNodes = []
-        lineNodes = []
+//        lineNodes = []
         updatePlane()
     }
     
@@ -117,6 +124,23 @@ class MainViewController: UIViewController, ARSCNViewDelegate {
             } else {
                 updateResultLabel(0.0)
             }
+            
+            var found = false
+            for point in pointNodes {
+                if point.position.distance(from: worldPos) < highlightRadius {
+                    if point != highlightedNode {
+                        highlightedNode?.changeMaterialToColor(color: UIColor.white.withAlphaComponent(0.7))
+                        highlightedNode = point
+                        highlightedNode?.changeMaterialToColor(color: UIColor.red.withAlphaComponent(0.7))
+                    }
+                    found = true
+                    break
+                }
+            }
+            if !found {
+                highlightedNode?.changeMaterialToColor(color: UIColor.white.withAlphaComponent(0.7))
+                highlightedNode = nil
+            }
         }
     }
     
@@ -132,10 +156,10 @@ class MainViewController: UIViewController, ARSCNViewDelegate {
             let lastSphere = pointNodes.removeLast()
             lastSphere.removeFromParentNode()
         }
-        if !pointNodes.isEmpty {
-            let lastLine = lineNodes.removeLast()
-            lastLine.removeFromParentNode()
-        }
+//        if !lineNodes.isEmpty {
+//            let lastLine = lineNodes.removeLast()
+//            lastLine.removeFromParentNode()
+//        }
         updatePlane()
     }
     
@@ -143,11 +167,22 @@ class MainViewController: UIViewController, ARSCNViewDelegate {
         self.performSegue(withIdentifier: "textureSegue", sender: nil)
     }
     
+    @IBAction func trashButtonPressed(_ sender: UIButton) {
+        if let point = highlightedNode {
+            point.removeFromParentNode()
+            if let index = pointNodes.index(of: point) {
+                dataPoints.remove(at: index)
+                pointNodes.remove(at: index)
+            }
+            updatePlane()
+        }
+    }
+    
     @objc func tapped(recognizer:UIGestureRecognizer) {
         if let worldPos = sceneView.realWorldVector(screenPosition: view.center) {
-            if let lastPosition = dataPoints.last {
-                createLine(start: lastPosition, stop: worldPos)
-            }
+//            if let lastPosition = dataPoints.last {
+//                createLine(start: lastPosition, stop: worldPos)
+//            }
             dataPoints.append(worldPos)
             createPoint(position: worldPos)
             updatePlane()
@@ -155,27 +190,24 @@ class MainViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func createPoint(position:SCNVector3) {
-        let radius:CGFloat = 0.02
         let sphere = SCNSphere(radius: radius)
-        let color = SCNMaterial()
-        color.diffuse.contents = UIColor.white
-        sphere.materials = [color]
         let sphereNode = SCNNode(geometry: sphere)
+        sphereNode.changeMaterialToColor(color: UIColor.white.withAlphaComponent(0.7))
         sphereNode.position = position
         
         pointNodes.append(sphereNode)
         self.sceneView.scene.rootNode.addChildNode(sphereNode)
     }
     
-    func createLine(start:SCNVector3, stop:SCNVector3) {
-        let line = SCNGeometry.lineFrom(vector: start, toVector: stop)
-        let material = SCNMaterial()
-        material.diffuse.contents = UIColor.red
-        line.materials = [material]
-        let lineNode = SCNNode(geometry: line)
-        lineNodes.append(lineNode)
-        self.sceneView.scene.rootNode.addChildNode(lineNode)
-    }
+//    func createLine(start:SCNVector3, stop:SCNVector3) {
+//        let line = SCNGeometry.lineFrom(vector: start, toVector: stop)
+//        let material = SCNMaterial()
+//        material.diffuse.contents = UIColor.red
+//        line.materials = [material]
+//        let lineNode = SCNNode(geometry: line)
+//        lineNodes.append(lineNode)
+//        self.sceneView.scene.rootNode.addChildNode(lineNode)
+//    }
     
     func clearPlane() {
         if let plane = currentPlane {

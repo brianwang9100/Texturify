@@ -58,6 +58,12 @@ extension SCNNode {
             node.removeFromParentNode()
         }
     }
+    
+    func changeMaterialToColor(color:UIColor) {
+        let material = SCNMaterial()
+        material.diffuse.contents = color
+        self.geometry?.materials = [material]
+    }
 }
 
 extension SCNGeometry {
