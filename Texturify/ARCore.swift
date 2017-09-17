@@ -71,35 +71,63 @@ extension SCNGeometry {
     }
     
     class func planeFrom(points:[SCNVector3]) -> SCNGeometry? {
-        if points.count == 4 {
+        if points.count > 2 {
+            //VERTICES
             var finalPoints:[SCNVector3] = []
             var minY:Float!
-            for i in 0...3 {
+            for i in 0..<points.count {
                 let point = points[i]
                 if minY == nil || point.y < minY {
                     minY = point.y
                 }
             }
-            for i in 0...3 {
+            for i in 0..<points.count {
                 let point = points[i]
                 finalPoints.append(SCNVector3(point.x, minY, point.z))
             }
+            let length = finalPoints.count
+            let centroid = SCNVector3Make(
+                finalPoints.map({ $0.x }).reduce(0, +) / Float(length),
+                finalPoints.map({ $0.y }).reduce(0, +) / Float(length),
+                finalPoints.map({ $0.z }).reduce(0, +) / Float(length)
+            )
             
-            var indices: [CInt] = [0, 1, 2]
-            let lastPoint = finalPoints[3]
-            var closestDistancePoints = finalPoints.sorted(by: { left, right in
-                lastPoint.distance(from: left) < lastPoint.distance(from: right)
-            })
-            let firstIndex = CInt(finalPoints.index(of: closestDistancePoints[1])!)
-            let secondIndex = CInt(finalPoints.index(of: closestDistancePoints[2])!)
-            indices.append(firstIndex)
-            indices.append(secondIndex)
-            indices.append(3)
-            
+            finalPoints = finalPoints.sorted(by: { atan2(Double($0.z - centroid.z), Double($0.x - centroid.x)) < atan2(Double($1.z - centroid.z), Double($1.x - centroid.x)) })
+            finalPoints.append(centroid)
+            var indices: [CInt] = []
+            let last = finalPoints.count - 1;
+            for i in 0..<last { //last one is centroid
+                if (i == last - 1) {
+                    indices.append(CInt(i))
+                    indices.append(CInt(0))
+                    indices.append(CInt(last))
+                } else {
+                    indices.append(CInt(i))
+                    indices.append(CInt(i+1))
+                    indices.append(CInt(last))
+                }
+                
+            }
             let source = SCNGeometrySource(vertices: finalPoints)
+            
+            // NORMALS
+            var normals:[SCNVector3] = []
+            for _ in finalPoints {
+                normals.append(SCNVector3(0,1,0))
+            }
+            let normalSource = SCNGeometrySource(normals: normals)
+            
+            //TEXTURE COORDS
+            var coords:[CGPoint] = []
+            for point in finalPoints {
+                coords.append(CGPoint(x: CGFloat(point.x), y: CGFloat(point.z)))
+            }
+            let textureCoordSource = SCNGeometrySource(textureCoordinates: coords)
+            
+            //ELEMENTS
             let element = SCNGeometryElement(indices: indices, primitiveType: .triangles)
             
-            return SCNGeometry(sources: [source], elements: [element])
+            return SCNGeometry(sources: [source, normalSource, textureCoordSource], elements: [element])
         }
         return nil
     }
@@ -117,6 +145,7 @@ extension SCNMaterial {
         material.roughness.contents = UIImage(named: "./art.scnassets/\(name)/\(name)-roughness.png")
         material.metalness.contents = UIImage(named: "./art.scnassets/\(name)/\(name)-metal.png")
         material.normal.contents = UIImage(named: "./art.scnassets/\(name)/\(name)-normal.png")
+        
         material.diffuse.wrapS = .repeat
         material.diffuse.wrapT = .repeat
         material.roughness.wrapS = .repeat

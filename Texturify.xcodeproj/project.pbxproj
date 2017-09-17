@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DFE48CF01F6E74C000455A20 /* TextureSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE48CEF1F6E74C000455A20 /* TextureSelectViewController.swift */; };
 		DFE977B41F6E05B100EE3166 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE977B31F6E05B100EE3166 /* AppDelegate.swift */; };
 		DFE977B61F6E05B100EE3166 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DFE977B51F6E05B100EE3166 /* art.scnassets */; };
-		DFE977B81F6E05B100EE3166 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE977B71F6E05B100EE3166 /* ViewController.swift */; };
 		DFE977BB1F6E05B100EE3166 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DFE977B91F6E05B100EE3166 /* Main.storyboard */; };
 		DFE977BD1F6E05B100EE3166 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DFE977BC1F6E05B100EE3166 /* Assets.xcassets */; };
 		DFE977C01F6E05B100EE3166 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DFE977BE1F6E05B100EE3166 /* LaunchScreen.storyboard */; };
@@ -18,10 +18,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DFE48CEF1F6E74C000455A20 /* TextureSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextureSelectViewController.swift; sourceTree = "<group>"; };
 		DFE977B01F6E05B100EE3166 /* Texturify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Texturify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFE977B31F6E05B100EE3166 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DFE977B51F6E05B100EE3166 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
-		DFE977B71F6E05B100EE3166 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		DFE977BA1F6E05B100EE3166 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DFE977BC1F6E05B100EE3166 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DFE977BF1F6E05B100EE3166 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -75,8 +75,8 @@
 		DFE977CA1F6E068F00EE3166 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				DFE977B71F6E05B100EE3166 /* ViewController.swift */,
 				DFE977C71F6E062000EE3166 /* MainViewController.swift */,
+				DFE48CEF1F6E74C000455A20 /* TextureSelectViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -154,8 +154,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DFE48CF01F6E74C000455A20 /* TextureSelectViewController.swift in Sources */,
 				DFE977C81F6E062000EE3166 /* MainViewController.swift in Sources */,
-				DFE977B81F6E05B100EE3166 /* ViewController.swift in Sources */,
 				DFE977B41F6E05B100EE3166 /* AppDelegate.swift in Sources */,
 				DFE977CC1F6E06EF00EE3166 /* ARCore.swift in Sources */,
 			);

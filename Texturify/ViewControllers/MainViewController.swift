@@ -16,6 +16,7 @@ class MainViewController: UIViewController, ARSCNViewDelegate {
     @IBOutlet weak var distanceLabel: UILabel!
     
     @IBOutlet weak var undoButton: UIButton!
+    @IBOutlet weak var textureButton: UIButton!
     
     let session = ARSession()
     let sessionConfig = ARWorldTrackingConfiguration()
@@ -25,6 +26,9 @@ class MainViewController: UIViewController, ARSCNViewDelegate {
     var lineNodes:[SCNNode] = []
     
     var currentPlane:SCNNode!
+    
+    var textures = ["carvedlimestoneground, granitesmooth, oakfloor2, old-textured-fabric, rustediron-streaks, sculptedfloorboards, tron"]
+    var currentTextureIndex = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,14 +60,19 @@ class MainViewController: UIViewController, ARSCNViewDelegate {
     
     func uiSetup() {
         undoButton.transform = CGAffineTransform(rotationAngle: CGFloat(270 * Double.pi/180))
+        textureButton.layer.cornerRadius = textureButton.frame.width / 2
     }
     
     func resetValues() {
+        for point in pointNodes {
+            point.removeFromParentNode()
+        }
+        for line in lineNodes {
+            line.removeFromParentNode()
+        }
         dataPoints = []
         pointNodes = []
         lineNodes = []
-        updatePlane()
-        self.sceneView.scene.rootNode.removeAllChildren()
     }
     
     func updateResultLabel(_ value: Float) {
@@ -107,6 +116,10 @@ class MainViewController: UIViewController, ARSCNViewDelegate {
         updatePlane()
     }
     
+    @IBAction func textureButtonPressed(_ sender: UIButton) {
+        
+    }
+    
     @objc func tapped(recognizer:UIGestureRecognizer) {
         if let worldPos = sceneView.realWorldVector(screenPosition: view.center) {
             if let lastPosition = dataPoints.last {
@@ -133,6 +146,9 @@ class MainViewController: UIViewController, ARSCNViewDelegate {
     
     func createLine(start:SCNVector3, stop:SCNVector3) {
         let line = SCNGeometry.lineFrom(vector: start, toVector: stop)
+        let material = SCNMaterial()
+        material.diffuse.contents = UIColor.red
+        line.materials = [material]
         let lineNode = SCNNode(geometry: line)
         lineNodes.append(lineNode)
         self.sceneView.scene.rootNode.addChildNode(lineNode)
@@ -149,7 +165,7 @@ class MainViewController: UIViewController, ARSCNViewDelegate {
         if let geometry = SCNGeometry.planeFrom(points: dataPoints) {
             let material = SCNMaterial.materialNamed(name: "oakfloor2")
             material.isDoubleSided = true
-            geometry.firstMaterial = material
+            geometry.materials = [material]
             currentPlane = SCNNode(geometry: geometry)
             self.sceneView.scene.rootNode.addChildNode(currentPlane)
         }

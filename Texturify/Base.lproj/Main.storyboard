@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="CGC-jL-GOC">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="gMP-PO-ayj">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Baseline standard spacing" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -22,8 +23,8 @@
                             <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jOm-NM-g8P">
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                             </arscnView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="someting cm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TNW-Fz-zgs">
-                                <rect key="frame" x="132.5" y="266" width="110" height="24"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Calibrating..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TNW-Fz-zgs">
+                                <rect key="frame" x="133.5" y="266" width="108" height="24"/>
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="20"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -45,7 +46,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bPN-yt-0Hu">
-                                <rect key="frame" x="307" y="571" width="38" height="66"/>
+                                <rect key="frame" x="307" y="581" width="38" height="66"/>
                                 <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="45"/>
                                 <state key="normal" title="↺">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -54,33 +55,96 @@
                                     <action selector="undoButtonPressed:" destination="CGC-jL-GOC" eventType="touchUpInside" id="zoG-ss-BCz"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tlS-4i-4UZ">
+                                <rect key="frame" x="169.5" y="594" width="35" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="35" id="Ns0-Ln-YVi"/>
+                                    <constraint firstAttribute="width" secondItem="tlS-4i-4UZ" secondAttribute="height" multiplier="1:1" id="nBs-7a-21m"/>
+                                </constraints>
+                                <state key="normal" image="granitesmooth-albedo.png"/>
+                                <connections>
+                                    <action selector="textureButtonPressed:" destination="CGC-jL-GOC" eventType="touchUpInside" id="y7V-Jd-pZB"/>
+                                    <segue destination="m5a-7T-mnF" kind="show" id="VQ1-Za-tZ0"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="p9F-Pf-hie" firstAttribute="bottom" secondItem="jOm-NM-g8P" secondAttribute="bottom" id="0PK-CZ-Q02"/>
                             <constraint firstItem="jOm-NM-g8P" firstAttribute="top" secondItem="p9F-Pf-hie" secondAttribute="top" id="5PX-Ij-QGP"/>
-                            <constraint firstItem="peE-n9-vGc" firstAttribute="firstBaseline" secondItem="TNW-Fz-zgs" secondAttribute="baseline" constant="100" symbolType="layoutAnchor" id="9RC-YV-rJZ"/>
+                            <constraint firstItem="peE-n9-vGc" firstAttribute="firstBaseline" secondItem="TNW-Fz-zgs" secondAttribute="baseline" constant="104" symbolType="layoutAnchor" id="9RC-YV-rJZ"/>
+                            <constraint firstItem="tlS-4i-4UZ" firstAttribute="centerX" secondItem="aE4-3t-pTK" secondAttribute="centerX" id="BgW-Sr-DI7"/>
                             <constraint firstItem="TNW-Fz-zgs" firstAttribute="centerX" secondItem="peE-n9-vGc" secondAttribute="centerX" id="IBe-8F-pZj"/>
                             <constraint firstItem="peE-n9-vGc" firstAttribute="centerY" secondItem="aE4-3t-pTK" secondAttribute="centerY" constant="20" id="Q9E-67-bhS"/>
                             <constraint firstItem="p9F-Pf-hie" firstAttribute="trailing" secondItem="bPN-yt-0Hu" secondAttribute="trailing" constant="30" id="Ss9-6X-bfW"/>
                             <constraint firstItem="p9F-Pf-hie" firstAttribute="trailing" secondItem="jOm-NM-g8P" secondAttribute="trailing" id="aO8-RT-XMj"/>
                             <constraint firstItem="peE-n9-vGc" firstAttribute="centerX" secondItem="aE4-3t-pTK" secondAttribute="centerX" id="aoq-YO-bTq"/>
-                            <constraint firstItem="p9F-Pf-hie" firstAttribute="bottom" secondItem="bPN-yt-0Hu" secondAttribute="bottom" constant="30" id="d4r-F7-d5z"/>
+                            <constraint firstItem="p9F-Pf-hie" firstAttribute="bottom" secondItem="bPN-yt-0Hu" secondAttribute="bottom" constant="20" id="d4r-F7-d5z"/>
                             <constraint firstItem="wxl-H0-BjX" firstAttribute="leading" secondItem="p9F-Pf-hie" secondAttribute="leading" constant="30" id="jT1-xt-OyH"/>
+                            <constraint firstItem="p9F-Pf-hie" firstAttribute="bottom" secondItem="tlS-4i-4UZ" secondAttribute="bottom" constant="38" id="qSo-gw-zg9"/>
                             <constraint firstItem="jOm-NM-g8P" firstAttribute="leading" secondItem="p9F-Pf-hie" secondAttribute="leading" id="ssb-e2-gLS"/>
                             <constraint firstItem="p9F-Pf-hie" firstAttribute="bottom" secondItem="wxl-H0-BjX" secondAttribute="bottom" constant="30" id="uW3-M3-m52"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="p9F-Pf-hie"/>
                     </view>
+                    <navigationItem key="navigationItem" id="2e6-6e-WuB"/>
                     <connections>
                         <outlet property="distanceLabel" destination="TNW-Fz-zgs" id="Y1a-ez-9Wv"/>
                         <outlet property="sceneView" destination="jOm-NM-g8P" id="f8f-gV-xuO"/>
+                        <outlet property="textureButton" destination="tlS-4i-4UZ" id="7QJ-ux-Muq"/>
                         <outlet property="undoButton" destination="bPN-yt-0Hu" id="1CY-cW-ufO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3vi-8c-s7r" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="193" y="144"/>
+            <point key="canvasLocation" x="532" y="143.47826086956522"/>
+        </scene>
+        <!--Texture Select View Controller-->
+        <scene sceneID="urh-yB-V3b">
+            <objects>
+                <viewController id="m5a-7T-mnF" customClass="TextureSelectViewController" customModule="Texturify" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5ht-mS-MIj">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="TNY-a1-Vse">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="j5z-zO-pxx" firstAttribute="trailing" secondItem="TNY-a1-Vse" secondAttribute="trailing" id="CyU-fN-Yyj"/>
+                            <constraint firstItem="j5z-zO-pxx" firstAttribute="bottom" secondItem="TNY-a1-Vse" secondAttribute="bottom" id="F8y-fH-jzE"/>
+                            <constraint firstItem="TNY-a1-Vse" firstAttribute="top" secondItem="j5z-zO-pxx" secondAttribute="top" id="RPT-Sa-mgt"/>
+                            <constraint firstItem="TNY-a1-Vse" firstAttribute="leading" secondItem="j5z-zO-pxx" secondAttribute="leading" id="oFj-3z-4zm"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="j5z-zO-pxx"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LVK-Tt-Cyc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1311" y="143"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="NPJ-vm-Vi2">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="gMP-PO-ayj" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Jg3-p0-EEf">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="CGC-jL-GOC" kind="relationship" relationship="rootViewController" id="no3-gV-rRS"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HCL-xO-EOX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-263" y="143"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="granitesmooth-albedo.png" width="2048" height="2048"/>
+    </resources>
 </document>
