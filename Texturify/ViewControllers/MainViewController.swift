@@ -55,7 +55,7 @@ class MainViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func uiSetup() {
-        undoButton.transform = CGAffineTransform(rotationAngle: CGFloat(270 * M_PI/180))
+        undoButton.transform = CGAffineTransform(rotationAngle: CGFloat(270 * Double.pi/180))
     }
     
     func resetValues() {
@@ -146,8 +146,10 @@ class MainViewController: UIViewController, ARSCNViewDelegate {
     
     func updatePlane() {
         clearPlane()
-        if dataPoints.count >= 2 {
-            let geometry = SCNGeometry.planeFromPoints(points: dataPoints)
+        if let geometry = SCNGeometry.planeFrom(points: dataPoints) {
+            let material = SCNMaterial.materialNamed(name: "oakfloor2")
+            material.isDoubleSided = true
+            geometry.firstMaterial = material
             currentPlane = SCNNode(geometry: geometry)
             self.sceneView.scene.rootNode.addChildNode(currentPlane)
         }
