@@ -10,9 +10,16 @@ import UIKit
 
 class TextureSelectViewController: UIViewController {
 
+    @IBOutlet weak var tableView: UITableView!
+    
+    var textures:[String]!
+    
+    var callback:((Int) -> Void)!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        tableView.delegate = self
+        tableView.dataSource = self
         // Do any additional setup after loading the view.
     }
 
@@ -20,16 +27,33 @@ class TextureSelectViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
-    /*
-    // MARK: - Navigation
+}
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+extension TextureSelectViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return textures.count
     }
-    */
-
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TextureCell", for: indexPath) as! TextureCell
+        let index = indexPath.row
+        let name = textures[index]
+        cell.reset()
+        DispatchQueue.main.async {
+            let image = UIImage(named: "./art.scnassets/\(name)/\(name)-albedo.png")!
+            UIView.animate(withDuration: 1.0, animations: {
+                cell.backgroundImageView.image = image
+                cell.squareImageView.image = image
+            })
+        }
+        cell.textureLabel.text = name
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        callback(indexPath.row)
+        self.navigationController?.popViewController(animated: true)
+    }
 }

@@ -27,7 +27,7 @@ class MainViewController: UIViewController, ARSCNViewDelegate {
     
     var currentPlane:SCNNode!
     
-    var textures = ["carvedlimestoneground, granitesmooth, oakfloor2, old-textured-fabric, rustediron-streaks, sculptedfloorboards, tron"]
+    var textures = ["carvedlimestoneground", "granitesmooth", "oakfloor2", "old-textured-fabric", "rustediron-streaks", "sculptedfloorboards", "tron"]
     var currentTextureIndex = 0
     
     override func viewDidLoad() {
@@ -42,11 +42,22 @@ class MainViewController: UIViewController, ARSCNViewDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         UIApplication.shared.isIdleTimerDisabled = true
+        session.run(sessionConfig)
+        uiSetup()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         session.pause()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let dest = segue.destination as! TextureSelectViewController
+        dest.textures = textures
+        dest.callback = { index in
+            self.currentTextureIndex = index
+            self.updateTextureButton()
+        }
     }
     
     func setupScene() {
@@ -59,8 +70,19 @@ class MainViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func uiSetup() {
-        undoButton.transform = CGAffineTransform(rotationAngle: CGFloat(270 * Double.pi/180))
-        textureButton.layer.cornerRadius = textureButton.frame.width / 2
+//        undoButton.transform = CGAffineTransform(rotationAngle: CGFloat(270 * Double.pi/180))
+        textureButton.layer.cornerRadius = textureButton.frame.width / 6
+        textureButton.clipsToBounds = true
+        updateTextureButton()
+    }
+    
+    func updateTextureButton() {
+        DispatchQueue.main.async {
+            let name = self.textures[self.currentTextureIndex]
+            let image = UIImage(named: "./art.scnassets/\(name)/\(name)-albedo.png")!
+            self.textureButton.setImage(image, for: .normal)
+            self.updatePlane()
+        }
     }
     
     func resetValues() {
@@ -73,6 +95,7 @@ class MainViewController: UIViewController, ARSCNViewDelegate {
         dataPoints = []
         pointNodes = []
         lineNodes = []
+        updatePlane()
     }
     
     func updateResultLabel(_ value: Float) {
@@ -117,7 +140,7 @@ class MainViewController: UIViewController, ARSCNViewDelegate {
     }
     
     @IBAction func textureButtonPressed(_ sender: UIButton) {
-        
+        self.performSegue(withIdentifier: "textureSegue", sender: nil)
     }
     
     @objc func tapped(recognizer:UIGestureRecognizer) {
@@ -163,7 +186,7 @@ class MainViewController: UIViewController, ARSCNViewDelegate {
     func updatePlane() {
         clearPlane()
         if let geometry = SCNGeometry.planeFrom(points: dataPoints) {
-            let material = SCNMaterial.materialNamed(name: "oakfloor2")
+            let material = SCNMaterial.materialNamed(name: textures[currentTextureIndex])
             material.isDoubleSided = true
             geometry.materials = [material]
             currentPlane = SCNNode(geometry: geometry)

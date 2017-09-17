@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		DFE48CF01F6E74C000455A20 /* TextureSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE48CEF1F6E74C000455A20 /* TextureSelectViewController.swift */; };
+		DFE48CF21F6E75ED00455A20 /* Cells.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE48CF11F6E75ED00455A20 /* Cells.swift */; };
 		DFE977B41F6E05B100EE3166 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE977B31F6E05B100EE3166 /* AppDelegate.swift */; };
 		DFE977B61F6E05B100EE3166 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DFE977B51F6E05B100EE3166 /* art.scnassets */; };
 		DFE977BB1F6E05B100EE3166 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DFE977B91F6E05B100EE3166 /* Main.storyboard */; };
@@ -19,6 +20,7 @@
 
 /* Begin PBXFileReference section */
 		DFE48CEF1F6E74C000455A20 /* TextureSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextureSelectViewController.swift; sourceTree = "<group>"; };
+		DFE48CF11F6E75ED00455A20 /* Cells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cells.swift; sourceTree = "<group>"; };
 		DFE977B01F6E05B100EE3166 /* Texturify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Texturify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFE977B31F6E05B100EE3166 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DFE977B51F6E05B100EE3166 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -62,6 +64,7 @@
 			children = (
 				DFE977B31F6E05B100EE3166 /* AppDelegate.swift */,
 				DFE977CB1F6E06EF00EE3166 /* ARCore.swift */,
+				DFE48CF11F6E75ED00455A20 /* Cells.swift */,
 				DFE977CA1F6E068F00EE3166 /* ViewControllers */,
 				DFE977B91F6E05B100EE3166 /* Main.storyboard */,
 				DFE977BC1F6E05B100EE3166 /* Assets.xcassets */,
@@ -158,6 +161,7 @@
 				DFE977C81F6E062000EE3166 /* MainViewController.swift in Sources */,
 				DFE977B41F6E05B100EE3166 /* AppDelegate.swift in Sources */,
 				DFE977CC1F6E06EF00EE3166 /* ARCore.swift in Sources */,
+				DFE48CF21F6E75ED00455A20 /* Cells.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
