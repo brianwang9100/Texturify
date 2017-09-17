@@ -50,6 +50,16 @@ extension ARSCNView {
         
         return nil
     }
+    
+    func highlightedNode(screenPosition: CGPoint, ignore: [SCNNode]) -> SCNNode? {
+        let results = self.hitTest(screenPosition, options: nil)
+        for result in results {
+            if !ignore.contains(result.node) {
+                return result.node
+            }
+        }
+        return nil
+    }
 }
 
 extension SCNNode {

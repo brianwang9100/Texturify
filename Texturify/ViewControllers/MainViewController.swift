@@ -23,6 +23,8 @@ class MainViewController: UIViewController, ARSCNViewDelegate {
     
     @IBOutlet weak var trashButton: UIButton!
     
+    @IBOutlet weak var previewButton: UIButton!
+    
     let session = ARSession()
     let sessionConfig = ARWorldTrackingConfiguration()
     
@@ -37,13 +39,21 @@ class MainViewController: UIViewController, ARSCNViewDelegate {
     
     var highlightedNode:SCNNode?
     
+    var previewNode:SCNNode?
+    
+    var pauseRuler:Bool = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupScene()
         
-        let gestureRecognizer = UITapGestureRecognizer()
-        gestureRecognizer.addTarget(self, action: #selector(MainViewController.tapped(recognizer:)))
-        self.view.addGestureRecognizer(gestureRecognizer)
+        let tapGestureRecognizer = UITapGestureRecognizer()
+        tapGestureRecognizer.addTarget(self, action: #selector(MainViewController.tapped(recognizer:)))
+        self.view.addGestureRecognizer(tapGestureRecognizer)
+        
+        let longPressGestureRecognizer = UILongPressGestureRecognizer()
+        longPressGestureRecognizer.addTarget(self, action: #selector(MainViewController.longPressed(recognizer:)))
+        self.view.addGestureRecognizer(longPressGestureRecognizer)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -106,9 +116,11 @@ class MainViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func updateResultLabel(_ value: Float) {
-        let cm = value * 100.0
-        let inch = cm * 0.3937007874
-        distanceLabel.text = String(format: "%.2f cm / %.2f\"", cm, inch)
+        if !pauseRuler {
+            let cm = value * 100.0
+            let inch = cm * 0.3937007874
+            distanceLabel.text = String(format: "%.2f cm / %.2f inch", cm, inch)
+        }
     }
     
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
@@ -119,29 +131,38 @@ class MainViewController: UIViewController, ARSCNViewDelegate {
     
     func detectObjects() {
         if let worldPos = sceneView.realWorldVector(screenPosition: view.center) {
+            //label updates
             if let last = dataPoints.last {
                 updateResultLabel(worldPos.distance(from: last))
             } else {
                 updateResultLabel(0.0)
             }
             
-            var found = false
-            for point in pointNodes {
-                if point.position.distance(from: worldPos) < highlightRadius {
-                    if point != highlightedNode {
-                        highlightedNode?.changeMaterialToColor(color: UIColor.white.withAlphaComponent(0.7))
-                        highlightedNode = point
-                        highlightedNode?.changeMaterialToColor(color: UIColor.red.withAlphaComponent(0.7))
-                    }
-                    found = true
-                    break
-                }
-            }
-            if !found {
-                highlightedNode?.changeMaterialToColor(color: UIColor.white.withAlphaComponent(0.7))
-                highlightedNode = nil
+            //preview node
+            if let node = previewNode {
+                node.position = worldPos
             }
         }
+        
+        // highlight node
+        var ignore:[SCNNode] = []
+        if let preview = previewNode {
+            ignore.append(preview)
+        }
+        if let plane = currentPlane {
+            ignore.append(plane)
+        }
+        if let point = sceneView.highlightedNode(screenPosition: view.center, ignore: ignore) {
+            if point != highlightedNode {
+                highlightedNode?.changeMaterialToColor(color: UIColor.white.withAlphaComponent(0.7))
+                highlightedNode = point
+                highlightedNode?.changeMaterialToColor(color: UIColor.red.withAlphaComponent(0.7))
+            }
+        } else {
+            highlightedNode?.changeMaterialToColor(color: UIColor.white.withAlphaComponent(0.7))
+            highlightedNode = nil
+        }
+        
     }
     
     @IBAction func clearButtonPressed(_ sender: UIButton) {
@@ -178,14 +199,35 @@ class MainViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     
+    @IBAction func previewButtonPressed(_ sender: UIButton) {
+        if let node = previewNode {
+            node.removeFromParentNode()
+            previewNode = nil
+        } else {
+            let sphere = SCNSphere(radius: radius)
+            previewNode = SCNNode(geometry: sphere)
+            previewNode!.changeMaterialToColor(color: UIColor.yellow.withAlphaComponent(0.7))
+            self.sceneView.scene.rootNode.addChildNode(previewNode!)
+        }
+    }
+    
     @objc func tapped(recognizer:UIGestureRecognizer) {
         if let worldPos = sceneView.realWorldVector(screenPosition: view.center) {
-//            if let lastPosition = dataPoints.last {
-//                createLine(start: lastPosition, stop: worldPos)
-//            }
+            //            if let lastPosition = dataPoints.last {
+            //                createLine(start: lastPosition, stop: worldPos)
+            //            }
             dataPoints.append(worldPos)
             createPoint(position: worldPos)
             updatePlane()
+        }
+    }
+    
+    @objc func longPressed(recognizer:UILongPressGestureRecognizer) {
+        if recognizer.state == .began || recognizer.state == .changed {
+            pauseRuler = true
+        }
+        if recognizer.state == .ended {
+            pauseRuler = false
         }
     }
     
